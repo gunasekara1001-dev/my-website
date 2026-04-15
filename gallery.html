@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Gallery</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Arial;
+      color:white;
+      text-align:center;
+      overflow-x:hidden;
+    }
+
+    /* 🎬 Video Background */
+    .video-bg{
+      position:fixed;
+      right:0;
+      bottom:0;
+      min-width:100%;
+      min-height:100%;
+      object-fit:cover;
+      z-index:-1;
+    }
+
+    /* 🌑 Overlay */
+    .overlay{
+      position:fixed;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.7);
+      z-index:-1;
+    }
+
+    h1{
+      margin-top:20px;
+      color:#00c6ff;
+      text-shadow:0 0 10px #00c6ff;
+    }
+
+    .btn{
+      padding:10px 20px;
+      background:#00c6ff;
+      border:none;
+      border-radius:20px;
+      font-weight:bold;
+      cursor:pointer;
+      margin:10px;
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      background:#0072ff;
+      color:white;
+      transform:scale(1.1);
+    }
+
+    /* 🖼️ Gallery */
+    .gallery{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:15px;
+      margin-top:20px;
+      padding-bottom:30px;
+    }
+
+    .gallery img, .gallery video{
+      width:220px;
+      border-radius:10px;
+      box-shadow:0 0 10px #00c6ff;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- 🎬 Background Video -->
+  <video autoplay muted loop class="video-bg" id="bgVideo">
+    <source src="pka.mp4" type="video/mp4">
+  </video>
+
+  <!-- 🌑 Overlay -->
+  <div class="overlay"></div>
+
+  <h1>🖼️ My Gallery 🎬</h1>
+
+  <!-- 🔊 Sound Button -->
+  <button onclick="toggleSound()" class="btn">🔊 Sound ON/OFF</button>
+
+  <br>
+
+  <!-- 📂 Upload -->
+  <input type="file" id="fileInput" multiple accept="image/*,video/*">
+
+  <br>
+
+  <!-- 🔗 Navigation -->
+  <a href="index.html" class="btn">🏠 Home</a>
+
+  <!-- 🖼️ Gallery Content -->
+  <div class="gallery" id="gallery"></div>
+
+  <!-- 🔊 JS -->
+  <script>
+    function toggleSound(){
+      let video = document.getElementById("bgVideo");
+
+      if(video.muted){
+        video.muted = false;
+        video.volume = 0.5;
+      }else{
+        video.muted = true;
+      }
+    }
+
+    const fileInput = document.getElementById("fileInput");
+    const gallery = document.getElementById("gallery");
+
+    fileInput.addEventListener("change", function(){
+      const files = this.files;
+
+      for(let file of files){
+        const url = URL.createObjectURL(file);
+
+        if(file.type.startsWith("image")){
+          let img = document.createElement("img");
+          img.src = url;
+          gallery.appendChild(img);
+        }
+        else if(file.type.startsWith("video")){
+          let video = document.createElement("video");
+          video.src = url;
+          video.controls = true;
+          gallery.appendChild(video);
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
